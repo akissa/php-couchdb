@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<package version="2.0" xmlns="http://pear.php.net/dtd/package-2.0"
+	xmlns:tasks="http://pear.php.net/dtd/tasks-1.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
+http://pear.php.net/dtd/tasks-1.0.xsd
+http://pear.php.net/dtd/package-2.0
+http://pear.php.net/dtd/package-2.0.xsd">
+
+<name>couchdb</name>
+<channel>pecl.php.net</channel>
+<summary>PHP extension to access CouchDB servers</summary>
+<description>
+The CouchDB extension allows PHP developers to easily 
+manipulate CouchDB documents stored on CouchDB servers
+using an object-oriented API. The extension implements
+most of the CouchDB API with the ultimate goal being 
+full support. The server JSON responses are automatically
+ decoded into native PHP objects or arrays.
+</description>
+<lead>
+<name>Andrew Colin Kissa</name>
+<user>topdog</user>
+<email>topdog@fedoraproject.org</email>
+<active>yes</active>
+</lead>
+<date>2009-10-23</date>
+<version>
+<release>0.0.2</release>
+<api>0.0.2</api>
+</version>
+<stability>
+<release>alpha</release>
+<api>alpha</api>
+</stability>
+<license uri="http://php.net/license" filesource="LICENSE">PHP</license>
+<notes>
+- Rewrite to follow PHP Coding standards
+- Added Support for builtin encoding and decoding
+- Added Support for built in attachment handling
+- Support the full CouchDB API
+- Add support for authentication
+</notes>
+<contents>
+<dir name="/">
+<file role='doc' name='LICENSE'/>
+<file role='doc' name='README'/>
+<file role='doc' name='EXPERIMENTAL'/>
+<file role='doc' name='CREDITS'/>
+<file role='src' name='config.m4'/>
+<file role='src' name='couchdb.c'/>
+<file role='src' name='php_couchdb.h'/>
+<dir name="examples">
+<file role="doc" name="example.php" />
+<file role="doc" name="php.gif" />
+</dir>
+<dir name="tests">
+</dir>
+</dir>
+</contents>
+<dependencies>
+<required>
+<php>
+<min>5.2.10</min>
+</php>
+<pearinstaller>
+<min>1.4.0a1</min>
+</pearinstaller>
+</required>
+</dependencies>
+<providesextension>couchdb</providesextension>
+<extsrcrelease />
+<changelog>
+<release>
+<date>2009-10-08</date>
+<version>
+<release>0.0.1</release>
+<api>0.0.1</api>
+</version>
+<stability>
+<release>alpha</release>
+<api>alpha</api>
+</stability>
+<notes>
+- First alpha version
+</notes>
+</release>
+</changelog>
+</package>

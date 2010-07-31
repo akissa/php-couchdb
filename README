@@ -1,0 +1,46 @@
+
+HACKING
+=======
+
+1) you can modify the generated code as with any other PHP extension
+
+BUILDING ON UNIX etc.
+=====================
+
+To compile your new extension, you will have to execute the following steps:
+
+1.  $ ./phpize
+2.  $ ./configure 
+3.  $ make
+4.  $ make test
+5.  $ [sudo] make install
+
+
+
+BUILDING ON WINDOWS
+===================
+
+No windows build is available at the moment
+
+TESTING
+=======
+
+You can now load the extension using a php.ini directive
+
+  extension="couchdb.so"
+
+or load it at runtime using the dl() function
+
+  dl("couchdb.so");
+
+The extension should now be available, you can test this
+using the extension_loaded() function:
+
+  if (extension_loaded("couchdb"))
+    echo "couchdb loaded :)";
+  else
+    echo "something is wrong :(";
+
+The extension will also add its own block to the output
+of phpinfo();
+
