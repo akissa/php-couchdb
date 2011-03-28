@@ -1059,8 +1059,9 @@ TC_METHOD(getDoc)
 	zval *options = NULL, *zret;
 	long http_response_code;
 	zend_bool assoc = 0;
+	zend_bool raw = false;
 	
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s|a", &doc_id, &doc_id_len, &options) == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s|ab", &doc_id, &doc_id_len, &options, &raw) == FAILURE) {
 		return;
 	}
 	
@@ -1080,7 +1081,11 @@ TC_METHOD(getDoc)
 	smart_str_appends(&surl, url);
 	smart_str_appendc(&surl, '/');
 	smart_str_appends(&surl, edb_name);
-	edoc_id = couchdb_encode_url(doc_id);
+	if (raw) {
+		edoc_id = doc_id;
+	} else {
+		edoc_id = couchdb_encode_url(doc_id);
+	}
 	smart_str_appendc(&surl, '/');
 	smart_str_appends(&surl, edoc_id);
 	smart_str_0(&surl);
@@ -1114,6 +1119,7 @@ TC_METHOD(storeDoc)
 	long http_response_code;
 	zend_bool assoc = 0, document_is_string = 0, got_doc_id = 0;
 	HashTable *zdocument_array = NULL;
+    HashTable *rheaders = NULL;
 	
 	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "z", &document) == FAILURE) {
@@ -1224,21 +1230,28 @@ TC_METHOD(storeDoc)
 		http_method = COUCHDB_POST;
 	}
 	
+	//add json header
+    ALLOC_HASHTABLE(rheaders);
+    zend_hash_init(rheaders, 0, NULL, ZVAL_PTR_DTOR, 0);
+    
+    couchdb_add_req_arg(rheaders, "Content-Type", "application/json" TSRMLS_CC);
+	
 	if (!document_is_string) {
 		smart_str_0(&json_string);
 		
 		MAKE_STD_ZVAL(zjson_string);
 		ZVAL_STRINGL(zjson_string, json_string.c, json_string.len, 1);
 		
-		http_response_code = couchdb_prepare_request(local_client, surl.c, http_method, zjson_string, NULL, 0 TSRMLS_CC);
+		http_response_code = couchdb_prepare_request(local_client, surl.c, http_method, zjson_string, rheaders, 0 TSRMLS_CC);
 		
 		zval_ptr_dtor(&zjson_string);
 		smart_str_free(&json_string);
 	}else {
-		http_response_code = couchdb_prepare_request(local_client, surl.c, http_method, document, NULL, 0 TSRMLS_CC);
+		http_response_code = couchdb_prepare_request(local_client, surl.c, http_method, document, rheaders, 0 TSRMLS_CC);
 	}
 	
-	smart_str_free(&surl);
+    smart_str_free(&surl);
+    FREE_ARGS_HASH(rheaders);
 	
 #if (PHP_MAJOR_VERSION == 5 && PHP_MINOR_VERSION >= 3) || (PHP_MAJOR_VERSION > 5)	
 	PROCESS_JSON_RESULT_COMPART_EX(http_response_code, local_client, assoc);
