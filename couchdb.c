@@ -1059,7 +1059,7 @@ TC_METHOD(getDoc)
 	zval *options = NULL, *zret;
 	long http_response_code;
 	zend_bool assoc = 0;
-	zend_bool raw = false;
+	zend_bool raw = 0;
 	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s|ab", &doc_id, &doc_id_len, &options, &raw) == FAILURE) {
 		return;
