@@ -576,21 +576,21 @@ static inline php_couchdb_object *fetch_couchdb_object(zval *obj TSRMLS_DC) /* {
 }
 /* }}} */
 
-static zval *couchdb_read_member(zval *obj, zval *mem, int type TSRMLS_DC) /* {{{ */
+static zval *couchdb_read_member(zval *obj, zval *mem, int type, const zend_literal *key TSRMLS_DC) /* {{{ */
 {
 	zval *return_value = NULL;
 	php_couchdb_object *local_client;
 	
 	local_client = fetch_couchdb_object(obj TSRMLS_CC);
 	
-	return_value = zend_get_std_object_handlers()->read_property(obj, mem, type TSRMLS_CC);
+	return_value = zend_get_std_object_handlers()->read_property(obj, mem, type, key TSRMLS_CC);
 	
 	return return_value;
 	
 } 
 /* }}} */
 
-static void couchdb_write_member(zval *obj, zval *mem, zval *value TSRMLS_DC) /* {{{ */
+static void couchdb_write_member(zval *obj, zval *mem, zval *value, const zend_literal *key TSRMLS_DC) /* {{{ */
 {
 	char *property;
 	php_couchdb_object *local_client;
@@ -598,7 +598,7 @@ static void couchdb_write_member(zval *obj, zval *mem, zval *value TSRMLS_DC) /*
 	property = Z_STRVAL_P(mem);
 	local_client = fetch_couchdb_object(obj TSRMLS_CC);
 	
-	zend_get_std_object_handlers()->write_property(obj, mem, value TSRMLS_CC);
+	zend_get_std_object_handlers()->write_property(obj, mem, value, key TSRMLS_CC);
 }
 /* }}} */
 
@@ -1709,11 +1709,6 @@ TC_METHOD(storeAttachment)
 		}else {
 			COUCHDB_ERROR(0, COUCHDB_FILE_READ_FAIL, filename);
 			return;
-		}
-	}else {
-		if (PG(magic_quotes_runtime)) {
-			file_contents = php_addslashes(file_contents, len, &new_len, 1 TSRMLS_CC);
-			len = new_len;
 		}
 	}
 
