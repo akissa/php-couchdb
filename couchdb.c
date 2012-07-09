@@ -1544,7 +1544,7 @@ TC_METHOD(getView)
 	int db_name_len = 0, design_doc_len = 0, view_name_len = 0;
 	smart_str surl = {0};
 	long http_response_code;
-	zval *zret, *query_options;
+	zval *zret, *query_options = NULL;
 	zend_bool assoc = 0;
 	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ss|a", &design_doc, &design_doc_len,
