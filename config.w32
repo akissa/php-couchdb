@@ -1,0 +1,8 @@
+// $Id$ 
+// vim:ft=javascript 
+ 
+ARG_ENABLE("couchdb", "enable couchdb support", "no"); 
+ 
+if (PHP_COUCHDB != "no") { 
+    EXTENSION("couchdb", "couchdb.c"); 
+} 
